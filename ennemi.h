@@ -1,37 +1,43 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef ennemi_H_INCLUDED
+#define ennemi_H_INCLUDED
+
 
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <SDL/SDL.h>
-#include <SDL/SDL_timer.h>
+#include <stdbool.h>
+#include <math.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
+#include <SDL/SDL_mixer.h>
+#include "perso.h"
+typedef enum STATE STATE;
+enum STATE{WAITING ,FOLLOWING, ATTACKING};
 
-
-typedef struct
+typedef struct 
 {
-
-	SDL_Surface* sprite;
-
+	SDL_Surface *image[4][4]; 
+	int speed;
+	int dir;
+	int num;
+	int attack;
 	SDL_Rect pos;
-	
-	int run_speed;
-	
-	int direction; //-1 if left and 1 if right
-	
-	int state; // chasing / idle / fighting
-	
-	int hp;
-	
-	int damage;	
-	
-}enemy;
-void init_enemy(enemy * e, char filename[], int x, int y, int direction,int run_speed);
-void disp_enemy(enemy e, SDL_Surface * window);
-void animate_Enemy(enemy * e);
-void move_enemy( enemy * e, int max, int min);
-//int collisionBB( Player p, Enemy e);//int collisionBB( SDL_Rect posSDL_Rect pos);
-//void moveIA( Enemy * e, SDL_Rect posPlayer);
+	STATE state; 
+	int level;
+	int etat_vie;
+	int collision;
+	int vie;
+}ennemi;
+
+
+void initEnnemi(ennemi *e);
+void afficherEnnemi(ennemi e, SDL_Surface *screen);
+void deplacerEnnemi(ennemi *e);
+void animerEnnemi(ennemi *e);
+int collisionBb(Personne p, ennemi e);
+int collisionBB(SDL_Rect posp, SDL_Rect pose);
+void updateEnnemi(ennemi *e,Personne p);
+void deplacerIA(ennemi *e);
+void libererennemi(ennemi e);
+
 #endif
